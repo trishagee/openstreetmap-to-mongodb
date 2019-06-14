@@ -13,3 +13,8 @@ dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.5.7'
     compile 'org.mongodb:mongo-java-driver:3.10.2'
 }
+
+task importData(dependsOn: 'classes', type: JavaExec) {
+    main = 'ImportOsmXmlToMongoDB'
+    classpath = sourceSets.main.runtimeClasspath
+}

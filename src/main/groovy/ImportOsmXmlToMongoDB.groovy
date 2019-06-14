@@ -15,8 +15,11 @@ def collection = mongoClient.getDatabase('Cafelito').getCollection('CoffeeShop')
 // NOTE: This script drops the whole collection before reimporting it
 collection.drop()
 
-//NOTE: this requires the correct working directory (src/main) in the run configuration
-def coffeeShops = new ZipFile(new File('resources/all-coffee-shops-2019.xml.zip'))
+// NOTE: this requires the correct working directory (project_home/build/classes/groovy) in the run configuration if
+// running from IntelliJ IDEA
+def coffeeShops = new ZipFile(new File(getClass().getResource('all-coffee-shops-2019.xml.zip').getFile()))
+println coffeeShops.getName() // if the script fails, it'll be because it can't find the file on the classpath
+
 def xmlSlurper = new XmlSlurper().parse(coffeeShops.getInputStream(coffeeShops.getEntry('all-coffee-shops-2019.xml')))
 xmlSlurper.node.findAll { it.tag.any { it.@k.text() == 'name' } }
                .each {
